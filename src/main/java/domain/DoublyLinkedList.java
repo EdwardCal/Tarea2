@@ -1,9 +1,9 @@
 package domain;
 
-public class SinglyLinkedList implements List {
+public class DoublyLinkedList implements List {
     private Node first; //apunta al inicio de la lista
 
-    public SinglyLinkedList() {
+    public DoublyLinkedList() {
         this.first = null;
     }
 
@@ -56,6 +56,8 @@ public class SinglyLinkedList implements List {
             }
             //se sale del while cuando aux.next == null
             aux.next = newNode;
+            //hago el doble enlace
+            newNode.prev = aux;
         }
 
     }
@@ -83,6 +85,7 @@ public class SinglyLinkedList implements List {
         //Caso 1. El elemento a suprimir es el primero de la lista
         if(util.Utility.compare(first.data, element)==0){
             first = first.next;
+            first.prev = null; //pq el anterior del 1er nodo quede apuntado a nulo
         }else {
             //Caso 2. El elemento puede estar en cualquier parte
             Node prev = first;
@@ -95,6 +98,9 @@ public class SinglyLinkedList implements List {
             if(aux!=null&&util.Utility.compare(aux.data, element)==0){
                 //desenlaza el nodo con el elemento a eliminar
                 prev.next = aux.next;
+                //mantengo el doble enlace
+                if(aux.next!=null)
+                    aux.next.prev = prev;
             }
         }
     }
