@@ -19,4 +19,8 @@ public class Node {
         this.data = data;
         this.prev = this.next = null;
     }
+    public Node(){
+        this.data = null;
+        this.prev = this.next = null;
+    }
 }
