@@ -101,8 +101,10 @@ public class Utility {
                         ch1.compareTo(ch2)>0? 1 : 0;
             case "Student":
                 Student st1 = (Student)a; Student st2 = (Student)b;
-                return st1.getId().compareTo(st2.getId())<0? -1 :
-                        st1.getId().compareTo(st2.getId())>0? 1 : 0;
+                return st1.getName().compareTo(st2.getId())<0? -1 :
+                        st1.getName().compareTo(st2.getId())>0? 1 : 0;
+//                return st1.getId().compareTo(st2.getId())<0? -1 :
+//                        st1.getId().compareTo(st2.getId())>0? 1 : 0;
             case "Course":
                 Course course1 = (Course)a; Course course2 = (Course)b;
                 return course1.getId().compareTo(course2.getId())<0? -1 :

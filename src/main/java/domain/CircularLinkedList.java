@@ -1,16 +1,17 @@
 package domain;
 
-public class SinglyLinkedList implements List {
+public class CircularLinkedList implements List {
     private Node first; //apunta al inicio de la lista
+    private Node last; //apunta al final de la lista
 
-    public SinglyLinkedList() {
+    public CircularLinkedList() {
         this.first = null;
     }
 
     @Override
     public int size() throws ListException {
         if(isEmpty()){
-            throw new ListException("Singly Linked List is empty");
+            throw new ListException("Circular Linked List is empty");
         }
         Node aux = first;
         int count = 0;
@@ -23,7 +24,7 @@ public class SinglyLinkedList implements List {
 
     @Override
     public void clear() {
-        first = null;    }
+        first = last = null;    }
 
     @Override
     public boolean isEmpty() {
@@ -36,26 +37,24 @@ public class SinglyLinkedList implements List {
             throw new ListException("Singly Linked List is empty");
         }
         Node aux = first;
-        while(aux!=null){
+        while(aux!=last){
             if(util.Utility.compare(aux.data, element)==0) return true;
             aux = aux.next; //muevo aux al sgte nodo
         }
-        return false; //si llego aqui, el elemento no existe
+        //se sale cuando aux==last
+        return util.Utility.compare(aux.data, element)==0;
     }
 
     @Override
     public void add(Object element) {
         Node newNode = new Node(element);
         if(isEmpty()){
-            first = newNode;
+            first = last = newNode;
         }else{
-            Node aux = first; //apunta al primer nodo de la lista
-            //necesito moverme por la lista hasta el final
-            while(aux.next!=null){
-                aux = aux.next;
-            }
-            //se sale del while cuando aux.next == null
-            aux.next = newNode;
+           last.next = newNode;
+           last = newNode; //last siempre queda en el ult nodo
+            //hago el enlace circular
+            last.next = first;
         }
 
     }
@@ -63,11 +62,13 @@ public class SinglyLinkedList implements List {
     @Override
     public void addFirst(Object element) {
         Node newNode = new Node(element);
-        if(isEmpty()){
-            first = newNode;
-        }else{
+        if(isEmpty()) {
+            first = last = newNode;
+        }else {
             newNode.next = first;
             first = newNode;
+            //hago el enlace circular
+            last.next = first;
         }
     }
 
@@ -80,7 +81,7 @@ public class SinglyLinkedList implements List {
     public void addInSortedList(Object element) {
         Node newNode = new Node(element);
         if(isEmpty()){
-            first = newNode;
+            first = last = newNode;
         }else{
             //Cuando first.data es mayor que element
             if(util.Utility.compare(first.data, element)>0){
@@ -90,7 +91,7 @@ public class SinglyLinkedList implements List {
                 Node prev = first; //rastro o marca
                 Node aux = first.next;
                 boolean added=false;
-                while(aux!=null&&!added){
+                while(aux!=last&&!added){
                     if(util.Utility.compare(aux.data, element)>0){
                         prev.next = newNode;
                         newNode.next = aux;
@@ -99,18 +100,26 @@ public class SinglyLinkedList implements List {
                     prev = aux;
                     aux = aux.next;
                 }
-                //enlazamos el nodo al final de la lista
-                if(!added) {
+                //aqui enlazamos cuando aux=last
+                if((util.Utility.compare(aux.data, element)==0)&&!added) {
                     prev.next = newNode;
+                    newNode.next = aux;
+                }else //enlaza al final
+                if(!added){
+                    aux.next = newNode;
+                    //muevo last al ult nodo
+                    last = newNode;
                 }
             }
         }
+        //hago el enlace circular
+        last.next = first;
     }
 
     @Override
     public void remove(Object element) throws ListException {
         if(isEmpty()){
-            throw new ListException("Singly Linked List is empty");
+            throw new ListException("Circular Linked List is empty");
         }
         //Caso 1. El elemento a suprimir es el primero de la lista
         if(util.Utility.compare(first.data, element)==0){
@@ -119,42 +128,55 @@ public class SinglyLinkedList implements List {
             //Caso 2. El elemento puede estar en cualquier parte
             Node prev = first;
             Node aux = first.next;
-            while(aux!=null && !(util.Utility.compare(aux.data, element)==0)){
+            while(aux!=last && !(util.Utility.compare(aux.data, element)==0)){
                 prev = aux;
                 aux = aux.next;
             }
-            //se sale cuando alcanza nulo o cuando encuentra el elemento
-            if(aux!=null&&util.Utility.compare(aux.data, element)==0){
+            //se sale cuando aux=last o cuando encuentra el elemento
+            if(util.Utility.compare(aux.data, element)==0){
                 //desenlaza el nodo con el elemento a eliminar
                 prev.next = aux.next;
+                //nos aseguraos que last quede apuntando al ult nodo
+                if(aux==last) { //estamos en el ult nodo
+                    last = prev;
+                }
             }
+        }
+        //mantengo el enlace circular
+        last.next  = first;
+        //ultima validacion
+        //que pasa si solo queda un nodo y es el q queremos eliminar
+        if(first==last&&util.Utility.compare(first.data, element)==0){
+            clear();
         }
     }
 
     @Override
     public Object removeFirst() throws ListException {
         if(isEmpty()){
-            throw new ListException("Singly Linked List is empty");
+            throw new ListException("Circular Linked List is empty");
         }
         Object element = first.data;
         first = first.next;
+        //hago el enlace circular
+        last.next = first;
         return element;
     }
 
     @Override
     public Object removeLast() throws ListException {
         if(isEmpty()){
-            throw new ListException("Singly Linked List is empty");
+            throw new ListException("Circular Linked List is empty");
         }
         Node aux = first;
         Node prev = first;
-        while(aux.next!=null){
+        while(aux.next!=last){
             prev = aux;
             aux = aux.next;
         }
         //aux esta en el ultimo nodo, es el q queremos eliminar
         Object element = aux.data;
-        prev.next = null; //desconecto el ultimo nodo
+        prev.next = first; //re-enlazamos el ult nodo
         return element;
     }
 
@@ -180,11 +202,13 @@ public class SinglyLinkedList implements List {
         }
         Node aux = first;
         int index = 1;
-        while(aux!=null){
+        while(aux!=last){
             if(util.Utility.compare(aux.data, element)==0) return index;
             index++;
             aux = aux.next; //lo movemos al sgte nodo
         }
+        //se sale cuando estamos en el ult nodo
+        if(util.Utility.compare(aux.data, element)==0) return index;
         return -1; //significa que el elemento no existe
     }
 
@@ -201,12 +225,7 @@ public class SinglyLinkedList implements List {
         if(isEmpty()){
             throw new ListException("Singly Linked List is empty");
         }
-        Node aux = first;
-        while(aux.next!=null){
-            aux = aux.next;
-        }
-        //se sale cuando aux esta en el ult nodo
-        return aux.data;
+        return last.data;
     }
 
     @Override
@@ -218,11 +237,15 @@ public class SinglyLinkedList implements List {
             return "It's the first, it has no prev";
         }
         Node aux = first;
-        while(aux.next!=null){
+        while(aux.next!=last){
             if(util.Utility.compare(aux.next.data, element)==0){
                 return aux.data;
             }
             aux = aux.next; //muevo aux al sgte nodo
+        }
+        //se sale cuando aux == last
+        if(util.Utility.compare(aux.data, element)==0) {
+            return aux.data;
         }
         return "Does not exist in Single Linked List";
     }
