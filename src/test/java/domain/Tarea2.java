@@ -35,10 +35,24 @@ public class Tarea2 {
         list4.add("d");
         list4.add("e");
 
-        System.out.println(list.toString());
-        System.out.println(list2.toString());
-        System.out.println(list3.toString());
-        System.out.println(list4.toString());
+//        System.out.println(list.toString());
+//        System.out.println(list2.toString());
+//        System.out.println(list3.toString());
+//        System.out.println(list4.toString());
+
+        try {
+
+            node.next=list.getNode(1);
+            list.getNode((Integer) list.getLast()).next=list2.getNode((Integer) list2.getFirst());
+            list2.getNode((Integer) list2.getLast()).next=list3.getNode((Integer) list3.getFirst());
+            list3.getNode((Integer) list3.getLast()).next=list4.getNode((Integer) list4.getFirst());
+            list4.getNode((Integer) list4.getLast()).next=null;
+
+
+        } catch (ListException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(node.toString());
 
     }
 }
