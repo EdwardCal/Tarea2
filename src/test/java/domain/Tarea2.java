@@ -27,7 +27,12 @@ public class Tarea2 {
         listC.add(4);
         listC.add(5);
 
-
+        CircularDoublyLinkedList list4= new CircularDoublyLinkedList();
+        list4.add("a");
+        list4.add("b");
+        list4.add("c");
+        list4.add("d");
+        list4.add("e");
 
         System.out.println(list.toString());
     }
