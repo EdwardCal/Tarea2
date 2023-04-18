@@ -170,7 +170,7 @@ public class CircularLinkedList implements List {
         }
         Node aux = first;
         Node prev = first;
-        while(aux.next!=last){
+        while(aux!=last){
             prev = aux;
             aux = aux.next;
         }
