@@ -15,11 +15,11 @@ public class CircularLinkedList implements List {
         }
         Node aux = first;
         int count = 0;
-        while(aux!=null){
+        while(aux!=last){
             count++;
             aux = aux.next; //muevo aux al sgte nodo
         }
-        return count;
+        return count+1;
     }
 
     @Override
@@ -67,9 +67,9 @@ public class CircularLinkedList implements List {
         }else {
             newNode.next = first;
             first = newNode;
-            //hago el enlace circular
-            last.next = first;
         }
+        //hago el enlace circular
+        last.next = first;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class CircularLinkedList implements List {
                     aux = aux.next;
                 }
                 //aqui enlazamos cuando aux=last
-                if((util.Utility.compare(aux.data, element)==0)&&!added) {
+                if((util.Utility.compare(aux.data, element)>0)&&!added) {
                     prev.next = newNode;
                     newNode.next = aux;
                 }else //enlaza al final
@@ -147,7 +147,7 @@ public class CircularLinkedList implements List {
         //ultima validacion
         //que pasa si solo queda un nodo y es el q queremos eliminar
         if(first==last&&util.Utility.compare(first.data, element)==0){
-            clear();
+            clear(); //anulo la lista
         }
     }
 
@@ -176,7 +176,7 @@ public class CircularLinkedList implements List {
         }
         //aux esta en el ultimo nodo, es el q queremos eliminar
         Object element = aux.data;
-        prev.next = first; //re-enlazamos el ult nodo
+        prev.next = first; //lo enlazamos con el primer nodo
         return element;
     }
 
@@ -247,7 +247,7 @@ public class CircularLinkedList implements List {
         if(util.Utility.compare(aux.data, element)==0) {
             return aux.data;
         }
-        return "Does not exist in Single Linked List";
+        return "Does not exist in Circular Linked List";
     }
 
     @Override
@@ -256,14 +256,17 @@ public class CircularLinkedList implements List {
             throw new ListException("Singly Linked List is empty");
         }
         Node aux = first;
-        while(aux!=null){
+        while(aux!=last){
             if(util.Utility.compare(aux.data, element)==0){
-                if(aux.next!=null) return aux.next.data;
-                else return "Has no next";
+                return aux.next.data;
             }
             aux = aux.next; //muevo aux al sgte nodo
         }
-        return "Does not exist in Single Linked List";
+        //se sale cuando aux==last
+        if(util.Utility.compare(aux.data, element)==0){
+            return aux.next.data; //el elemento anterior
+        }
+        return "Does not exist in Circular Linked List";
     }
 
     @Override
@@ -273,22 +276,28 @@ public class CircularLinkedList implements List {
         }
         Node aux = first;
         int i = 1;
-        while(aux!=null){
+        while(aux!=last){
             if(util.Utility.compare(i, index)==0) return aux;
             i++;
             aux = aux.next; //muevo aux al sgte nodo
+        }
+        //se sale cuando aux==last
+        if(util.Utility.compare(i, index)==0){
+            return aux;
         }
         return null; //si llega aqui, no encontro el nodo
     }
 
     @Override
     public String toString() {
-        String result="Singly Linked List Content\n";
+        String result="Circular Linked List Content\n";
         Node aux = first;
-        while(aux!=null){
+        while(aux!=last){
             result+=aux.data+" ";
             aux = aux.next; //muevo aux al sgte nodo
         }
-        return result;
+        //se sale cuando aux==last
+        //agregamos la info del ultimo nodo
+        return result+" "+aux.data;
     }
 }
