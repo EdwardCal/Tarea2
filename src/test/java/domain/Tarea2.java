@@ -63,8 +63,13 @@ public class Tarea2 {
         }
 
         SinglyLinkedList listas = new SinglyLinkedList();
-        System.out.println(listas.show(node));
-        System.out.println(listas.reverse(node));
+        try {
+            System.out.println(listas.show(node));
+            listas.reverse(node);
+        } catch (ListException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 

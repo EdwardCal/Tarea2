@@ -279,25 +279,12 @@ public class SinglyLinkedList implements List {
         return result;
     }
 
-    public String reverse(Node node){
-        String result="Singly Linked List Content\n";
+    public void reverse(Node node) throws ListException {
         Node aux = node;
-        while(aux!=null){
-            result=aux.data+" \n"+result;
-            aux = aux.next; //muevo aux al sgte nodo
+        if(aux.next!=null){
+            reverse(aux.next);
         }
-        return result;
+        System.out.println(aux.data);
     }
-
-    public String reverse2(Node node){
-        String result="Singly Linked List Content\n";
-        Node aux = node;
-        while(aux!=null){
-            result+=aux.data+" \n";
-            aux = aux.prev; //muevo aux al sgte nodo
-        }
-        return result;
-    }
-
 
 }
