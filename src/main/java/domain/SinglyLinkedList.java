@@ -268,4 +268,36 @@ public class SinglyLinkedList implements List {
         }
         return result;
     }
+
+    public String show(Node node){
+        String result="Singly Linked List Content\n";
+        Node aux = node;
+        while(aux!=null){
+            result+=aux.data+" \n";
+            aux = aux.next; //muevo aux al sgte nodo
+        }
+        return result;
+    }
+
+    public String reverse(Node node){
+        String result="Singly Linked List Content\n";
+        Node aux = node;
+        while(aux!=null){
+            result=aux.data+" \n"+result;
+            aux = aux.next; //muevo aux al sgte nodo
+        }
+        return result;
+    }
+
+    public String reverse2(Node node){
+        String result="Singly Linked List Content\n";
+        Node aux = node;
+        while(aux!=null){
+            result+=aux.data+" \n";
+            aux = aux.prev; //muevo aux al sgte nodo
+        }
+        return result;
+    }
+
+
 }

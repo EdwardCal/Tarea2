@@ -23,4 +23,6 @@ public class Node {
         this.data = null;
         this.prev = this.next = null;
     }
+
+
 }

@@ -62,8 +62,12 @@ public class Tarea2 {
             throw new RuntimeException(e);
         }
 
+        SinglyLinkedList listas = new SinglyLinkedList();
+        System.out.println(listas.show(node));
+        System.out.println(listas.reverse(node));
+    }
 
-        }
+
 
     }
 

@@ -285,4 +285,8 @@ public class DoublyLinkedList implements List {
         }
         return result;
     }
+
+
+
+
 }
