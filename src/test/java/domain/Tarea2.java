@@ -42,17 +42,28 @@ public class Tarea2 {
 
         try {
 
-            node.next=list.getNode(1);
-            list.getNode((Integer) list.getLast()).next=list2.getNode((Integer) list2.getFirst());
-            list2.getNode((Integer) list2.getLast()).next=list3.getNode((Integer) list3.getFirst());
-            list3.getNode((Integer) list3.getLast()).next=list4.getNode((Integer) list4.getFirst());
-            list4.getNode((Integer) list4.getLast()).next=null;
+
+            node.next = list.getNode(1);
+
+
+            list.getNode(list.size()).next = list2.getNode(1);
+
+
+            list2.getNode(list2.size()).next = list3.getNode(1);
+
+
+            list3.getNode(list3.size()).next = list4.getNode(1);
+
+
+            list4.getNode(list4.size()).next = null;
 
 
         } catch (ListException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(node.toString());
+
+
+        }
 
     }
-}
+
